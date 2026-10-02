@@ -1,11 +1,13 @@
+use std::error::Error;
 use crate::Properties;
 #[test]
-fn from_string() {
+fn from_string() -> Result<(), ()> {
     let properties = Properties::from_string("foo=bar\nwill_this_work=I hope so!\nthis_next_line_is_blank!=");
 
-    assert_eq!(properties.get("foo"), String::from("bar"));
-    assert_eq!(properties.get("will_this_work"), String::from("I hope so!"));
-    assert_eq!(properties.get("this_next_line_is_blank!"), String::from(""))
+    assert_eq!(properties.get("foo")?, String::from("bar"));
+    assert_eq!(properties.get("will_this_work")?, String::from("I hope so!"));
+    assert_eq!(properties.get("this_next_line_is_blank!")?, String::from(""));
+    Ok(())
 }
 
 #[test]
@@ -28,11 +30,12 @@ fn build() {
 
 #[test]
 // file provided by a Neoforge minecraft server
-fn read_minecraft_server_properties() {
+fn read_minecraft_server_properties() -> Result<(), ()> {
     let properties = Properties::from_file("./test_files/server.properties").unwrap();
 
-    assert_eq!(properties.get("motd"), "A Minecraft Server");
-    assert_eq!(properties.get("level-type"), "minecraft\\:normal");
-    assert_eq!(properties.get("gamemode"), "survival");
+    assert_eq!(properties.get("motd")?, "A Minecraft Server");
+    assert_eq!(properties.get("level-type")?, "minecraft\\:normal");
+    assert_eq!(properties.get("gamemode")?, "survival");
+    Ok(())
 }
 

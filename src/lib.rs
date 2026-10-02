@@ -71,12 +71,12 @@ impl Properties {
         self.values.remove(&key)
     }
 
-    /// Get the value of a given key
-    pub fn get(&self, key: &str) -> String {
+    /// Get the value of a given key, returns Err if the value is not found
+    pub fn get(&self, key: &str) -> Result<String,()> {
         if let Some(value) = self.values.get(key) {
-            value.clone()
+            Ok(value.clone())
         } else {
-            panic!("Key \"{}\" not found!", key)
+            Err(())
         }
     }
 
